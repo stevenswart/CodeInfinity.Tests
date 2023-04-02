@@ -184,7 +184,7 @@ if (!in_array($filetype, array_keys($allowedTypes))) {
 
 $filename = basename($filepath); // I'm using the original name here, but you can also change the name of the file here
 $extension = $allowedTypes[$filetype];
-$targetDirectory = __DIR__ . "/../../../storage/app/uploads"; // __DIR__ is the directory of the current PHP file
+$targetDirectory = __DIR__ . "/../../app/public/uploads"; // __DIR__ is the directory of the current PHP file
 
 $newFilepath = $targetDirectory . "/" . $filename . "." . $extension;
 
