@@ -9,6 +9,7 @@ use App\Models\Person;
 use Illuminate\Support\Facades\Validator;
 use App\Rules\DOBNotInFuture;
 use App\Rules\DOBMatchesID;
+use App\Rules\ValidSAIDNumber;
 
 
 class PersonController extends Controller
@@ -33,27 +34,19 @@ class PersonController extends Controller
         $validated = $request->validate([
             'firstName' => ['required', 'regex:/^[^\p{N}()!@#$%^&*()_+\=\[\]{};:"\\|,.<>\/?]+$/'],
             'lastName' => ['required', 'regex:/^[^\p{N}()!@#$%^&*()_+\=\[\]{};:"\\|,.<>\/?]+$/'],
-            'idNumber' => ['required',  'string', 'digits:13', 'unique:App\Models\Person,idNumber'],
+            'idNumber' => ['required',  'string', 'digits:13', 'unique:App\Models\Person,idNumber', new ValidSAIDNumber],
             'dob' => ['required', 'date_format:d/m/Y', new DOBNotInFuture, new DOBMatchesID($request->idNumber)]
             ], [
                 'idNumber_dob_match' => 'ID Number does not match Date of Birth!',
         ]);
-       /* $validator = Validator::make($request->all(), [
-            'firstName' => ['required', 'regex:/^[^\p{N}()!@#$%^&*()_+\=\[\]{};:"\\|,.<>\/?]+$/'],
-            'lastName' => ['required', 'regex:/^[^\p{N}()!@#$%^&*()_+\=\[\]{};:"\\|,.<>\/?]+$/'],
-            'idNumber' => ['required',  'string', 'digits:13', 'unique:App\Models\Person,idNumber'],
-            'dob' => ['required', 'date_format:d/m/Y', 'idNumber_dob_match:1']
-            ], [
-                'idNumber_dob_match' => 'ID Number does not match Date of Birth!',
-            ])->passes();*/
-        
+
         $post = new Person;
         $post->firstName = $request->firstName;
         $post->lastName = $request->lastName;
         $post->idNumber = $request->idNumber;
         $post->dob = $request->dob;
         $post->save();
- 
+
         return redirect('success')->with('status', 'Person has been added.');
     }
 
