@@ -7,7 +7,7 @@ use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-Schema::table('person', function (Blueprint $table) {
+Schema::table('people', function (Blueprint $table) {
     $table->string('idNumber',13)->unique();
     $table->string('dob',10);
 });
