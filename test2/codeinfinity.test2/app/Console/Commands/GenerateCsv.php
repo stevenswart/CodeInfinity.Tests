@@ -95,20 +95,9 @@ class GenerateCsv extends Command
      *
      * @return int
      */
-    public function handle()
+    public function generateTheCsv($numberOfRecords)
     {
-        runHandle($this->argument('numberOfRecords'));
-
-        return 0;
-    }
-
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
-    public function runHandle($numberOfRecords)
-    {
+        set_time_limit(0);
         $this->parseNames();
 
         for ($i = 0; $i < $numberOfRecords; ++$i)
@@ -130,10 +119,6 @@ class GenerateCsv extends Command
         {
             unlink(env('CSV_FILEPATH').sprintf("%s",CSV_FILENAME));
         }
-        /*if ( !file_exists(env('CSV_FILEPATH')) || !is_dir(env('CSV_FILEPATH')) )
-        {
-            mkdir(env('CSV_FILEPATH'));
-        }*/
 
         $csvFile = fopen(env('CSV_FILEPATH').sprintf("%s",CSV_FILENAME), "w");
         $header= ["ID","FirstName","LastName","Initials","Age","DateOfBirth"];
@@ -151,4 +136,15 @@ class GenerateCsv extends Command
 
         return 0;
     }
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle()
+    {
+        return $this->generateTheCsv($this->argument('numberOfRecords'));
+    }
 }
+

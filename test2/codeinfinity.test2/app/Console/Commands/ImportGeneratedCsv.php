@@ -36,16 +36,18 @@ class ImportGeneratedCsv extends Command
      *
      * @return int
      */
-    public function handle()
+    public function importTheGeneratedCsv($fullFilenameWithPath)
     {
-        if (!file_exists(env('CSV_FILEPATH').sprintf("%s",CSV_FILENAME)))
+        set_time_limit(0);
+        if (!file_exists($fullFilenameWithPath))
         {
             $this->info("No generated CSV file found!");
             return 1;
         }
 
-        $csvFile = fopen(env('CSV_FILEPATH').sprintf("%s",CSV_FILENAME), "r");
+        $csvFile = fopen($fullFilenameWithPath, "r");
 
+        $count = 0;
         $row = fgetcsv($csvFile, null, ",", '"', "\\");
         while (!is_bool($row))
         {
@@ -60,11 +62,22 @@ class ImportGeneratedCsv extends Command
                 $import_csv->age = $row[4];
                 $import_csv->dob = $row[5];
                 $import_csv->save();
+                ++$count;
             }
         }
 
         fclose($csvFile);
 
-        return 0;
+        return $count;
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle()
+    {
+        return $this->importTheGeneratedCsv(env('CSV_FILEPATH').sprintf("%s",CSV_FILENAME));
     }
 }

@@ -20,6 +20,6 @@
 use App\Console\Commands\GenerateCsv;
 
 $genCsv = New GenerateCsv();
-$genCsv->runHandle(Request::input('rows'));
+$genCsv->generateTheCsv(Request::input('rows'));
 
 @endphp

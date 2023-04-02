@@ -24,7 +24,3 @@ Route::post('/generate-csv', function () {
 Route::post('/upload-csv', function () {
     return view('upload-csv');
 });
-
-Route::get('/success', function () {
-    return view('success');
-});
